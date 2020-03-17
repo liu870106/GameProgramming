@@ -102,7 +102,7 @@ function onWindowResize(){
 function animate(){
 	renderer.render(scene,camera);
 	
-	if(turn)theta += 0.02;
+	if(turn)theta += 0.05;
 	car.rotation.y = Math.PI/2 + theta;
 	
 	car.position.set(60*Math.cos(theta),0,-60*Math.sin(theta));
