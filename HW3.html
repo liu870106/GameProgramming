@@ -141,46 +141,78 @@ function init() {
 
 function makeArm() {
 	var group = new THREE.Group();
-	var mat = new THREE.MeshNormalMaterial({transparent:true, opacity:opc});
+	var armMaterials = [
+  	new THREE.MeshBasicMaterial({map: new THREE.TextureLoader().load('https://i.imgur.com/xX2JCE5.jpg')}),	
+  	new THREE.MeshBasicMaterial({map: new THREE.TextureLoader().load('https://i.imgur.com/GByewsf.jpg')}),	
+  	new THREE.MeshBasicMaterial({map: new THREE.TextureLoader().load('https://i.imgur.com/SOx7P40.jpg')}),
+  	new THREE.MeshBasicMaterial({map: new THREE.TextureLoader().load('https://i.imgur.com/SOx7P40.jpg')}),
+  	new THREE.MeshBasicMaterial({map: new THREE.TextureLoader().load('https://i.imgur.com/SOx7P40.jpg')}),
+  	new THREE.MeshBasicMaterial({map: new THREE.TextureLoader().load('https://i.imgur.com/hd0nod7.jpg')})
+  ];
+	var mat = new THREE.MeshFaceMaterial(armMaterials);
 	var body = new THREE.Mesh (new THREE.BoxGeometry(3.82*k, 1.24*k, 1.24*k), mat);
   
 	group.add (body);
 	body.position.x = 3.82*k/2;
-	group.add (new THREE.AxesHelper (k));
+	//group.add (new THREE.AxesHelper (k));
 	return group;
 }
 
 function makeLeg() {
 	var group = new THREE.Group();
-	var mat = new THREE.MeshNormalMaterial({transparent:true, opacity:opc});
+	var legMaterials = [
+  	new THREE.MeshBasicMaterial({map: new THREE.TextureLoader().load('https://i.imgur.com/9a1YIe6.jpg')}),	//up	
+  	new THREE.MeshBasicMaterial({map: new THREE.TextureLoader().load('https://i.imgur.com/2dGgakU.jpg')}),	//down	
+  	new THREE.MeshBasicMaterial({map: new THREE.TextureLoader().load('https://i.imgur.com/TV3KOWT.jpg')}),	//left
+  	new THREE.MeshBasicMaterial({map: new THREE.TextureLoader().load('https://i.imgur.com/GMySQV5.jpg')}),	//right
+  	new THREE.MeshBasicMaterial({map: new THREE.TextureLoader().load('https://i.imgur.com/F3zNi8B.jpg')}),	//front
+  	new THREE.MeshBasicMaterial({map: new THREE.TextureLoader().load('https://i.imgur.com/2UR0BSk.jpg')})	//back
+  ];
+	var mat = new THREE.MeshFaceMaterial(legMaterials);
 	var body = new THREE.Mesh (new THREE.BoxGeometry(4.09*k, 1.26*k, 1.26*k), mat);
   
 	group.add (body);
 	body.position.x = 4.09*k/2;
-	group.add (new THREE.AxesHelper (k));
+	//group.add (new THREE.AxesHelper (k));
 	return group;
 
 }
 
 function makeHead() {
 	var headGroup = new THREE.Group();
-	var mat = new THREE.MeshNormalMaterial({transparent:true, opacity:opc});
+	var headMaterials = [
+		new THREE.MeshBasicMaterial({map: new THREE.TextureLoader().load('https://i.imgur.com/YNz2vs0.jpg')}),
+		new THREE.MeshBasicMaterial({map: new THREE.TextureLoader().load('https://i.imgur.com/pXbVm4X.jpg')}),
+		new THREE.MeshBasicMaterial({map: new THREE.TextureLoader().load('https://i.imgur.com/Yil3fSx.jpg')}),
+		new THREE.MeshBasicMaterial({map: new THREE.TextureLoader().load('https://i.imgur.com/Yil3fSx.jpg')}),
+		new THREE.MeshBasicMaterial({map: new THREE.TextureLoader().load('https://i.imgur.com/TZLkPpD.jpg')}),
+		new THREE.MeshBasicMaterial({map: new THREE.TextureLoader().load('https://i.imgur.com/Yil3fSx.jpg')})
+  ];
+	var mat = new THREE.MeshFaceMaterial(headMaterials);
 	var headBody = new THREE.Mesh (new THREE.BoxGeometry(2.52*k, 2.52*k, 2.52*k), mat);
 	
 	headGroup.add (headBody);
 	headBody.position.y = 2.52*k/2;
-	headGroup.add (new THREE.AxesHelper (k));
+	//headGroup.add (new THREE.AxesHelper (k));
 	return headGroup;
 }
 
 function makeTorso () {
 	var group = new THREE.Group();
-	var mat = new THREE.MeshNormalMaterial({transparent:true, opacity:opc});
+	var bodyMaterials = [
+		new THREE.MeshBasicMaterial({map: new THREE.TextureLoader().load('https://i.imgur.com/rLbPPZs.jpg')}),
+		new THREE.MeshBasicMaterial({map: new THREE.TextureLoader().load('https://i.imgur.com/S0Af6QL.jpg')}),
+		new THREE.MeshBasicMaterial({map: new THREE.TextureLoader().load('https://i.imgur.com/oOUnEWL.jpg')}),
+		new THREE.MeshBasicMaterial({map: new THREE.TextureLoader().load('https://i.imgur.com/SC3yLtK.jpg')}),
+		new THREE.MeshBasicMaterial({map: new THREE.TextureLoader().load('https://i.imgur.com/cY7Ifpe.jpg')}),
+		new THREE.MeshBasicMaterial({map: new THREE.TextureLoader().load('https://i.imgur.com/12qs3mH.jpg')})
+  ];
+	var mat = new THREE.MeshFaceMaterial(bodyMaterials);
 	var body = new THREE.Mesh (new THREE.BoxGeometry(2.52*k, 3.48*k, 1.26*k), mat);
   
 	group.add (body);
 	body.position.y = 3.48*k/2;
-	group.add (new THREE.AxesHelper (2*k));
+	//group.add (new THREE.AxesHelper (2*k));
 	return group;
 
 }
