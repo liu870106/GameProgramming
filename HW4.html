@@ -337,7 +337,6 @@ function onDocumentMouseDown(event) {
     puck.position.copy(intersects[0].point);
     //twoLinker.target.copy (intersects[0].point);
     // this is not enough ...
-	puck1.position.copy(intersects[0].point);
     twoLinker0.target.copy ( twoLinker0.body.worldToLocal (puck.position.clone()) )  
     twoLinker1.target.copy ( twoLinker1.body.worldToLocal (puck.position.clone()) )  
   }
