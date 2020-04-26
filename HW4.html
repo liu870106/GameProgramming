@@ -159,13 +159,10 @@ function init() {
   var gridXZ = new THREE.GridHelper(200, 20, 'red', 'white');
   //scene.add(gridXZ);
   window.addEventListener('resize', onWindowResize, false);
-
+  var texture = new THREE.TextureLoader().load('https://i.imgur.com/IdnprC4.jpg.' );
   /////////////////////////////////////////////////////////////////////
   let plane = new THREE.Mesh(new THREE.PlaneGeometry(400, 500), new THREE.MeshBasicMaterial({
-    transparent: true,
-    opacity: 0.5,
-    visible: true,
-    color: 'pink'
+    map: texture
   }));
   scene.add(plane);
   plane.rotation.x = -Math.PI / 2;
