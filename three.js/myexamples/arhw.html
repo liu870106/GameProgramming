@@ -16,135 +16,128 @@ Minimal Version
 
 <script>
 
-// global variables
-var renderer, scene, camera;
-var stats;
-var arToolKitSource, arToolKitContext;
-var markerHiro;
+var scene, camera, renderer, clock, deltaTime, totalTime;
 
-init();
+var arToolkitSource, arToolkitContext;
+
+var markerRoot1;
+
+var mesh1;
+
+initialize();
 animate();
 
-function init() {
+function initialize()
+{
+	scene = new THREE.Scene();
 
-	// init renderer
-	renderer	= new THREE.WebGLRenderer({
-		// antialias	: true,
+	let ambientLight = new THREE.AmbientLight( 0xcccccc, 0.5 );
+	scene.add( ambientLight );
+				
+	camera = new THREE.Camera();
+	scene.add(camera);
+
+	renderer = new THREE.WebGLRenderer({
+		antialias : true,
 		alpha: true
 	});
 	renderer.setClearColor(new THREE.Color('lightgrey'), 0)
-	// renderer.setPixelRatio( 1/2 );
-	renderer.setSize( window.innerWidth, window.innerHeight );
+	renderer.setSize( 640, 480 );
 	renderer.domElement.style.position = 'absolute'
 	renderer.domElement.style.top = '0px'
 	renderer.domElement.style.left = '0px'
 	document.body.appendChild( renderer.domElement );
 
-	stats = new Stats();
-	document.body.appendChild( stats.dom );
-
-	// init scene and camera
-	scene	= new THREE.Scene();
+	clock = new THREE.Clock();
+	deltaTime = 0;
+	totalTime = 0;
 	
-	// Create a BASIC camera
-	camera = new THREE.Camera();
-	scene.add(camera);
-
-	////////////////////////////////////////////////////////////////////////////////
-	//          handle arToolkitSource
-	////////////////////////////////////////////////////////////////////////////////
+	////////////////////////////////////////////////////////////
+	// setup arToolkitSource
+	////////////////////////////////////////////////////////////
 
 	arToolkitSource = new THREEx.ArToolkitSource({
-		// to read from the webcam 
 		sourceType : 'webcam',
-	})
+	});
 
-	arToolkitSource.init(function onReady(){
-		onResize()
-	})
-	
-	// handle resize
-	window.addEventListener('resize', function(){
-		onResize()
-	})
-	function onResize(){
+	function onResize()
+	{
 		arToolkitSource.onResize()	
 		arToolkitSource.copySizeTo(renderer.domElement)	
-		if( arToolkitContext.arController !== null ){
+		if ( arToolkitContext.arController !== null )
+		{
 			arToolkitSource.copySizeTo(arToolkitContext.arController.canvas)	
 		}	
 	}
-	////////////////////////////////////////////////////////////////////////////////
-	//          initialize arToolkitContext
-	////////////////////////////////////////////////////////////////////////////////
+
+	arToolkitSource.init(function onReady(){
+		onResize()
+	});
 	
+	// handle resize event
+	window.addEventListener('resize', function(){
+		onResize()
+	});
+	
+	////////////////////////////////////////////////////////////
+	// setup arToolkitContext
+	////////////////////////////////////////////////////////////	
+
+	// create atToolkitContext
 	arToolkitContext = new THREEx.ArToolkitContext({
-		cameraParametersUrl: THREEx.ArToolkitContext.baseURL + '../data/data/camera_para.dat',
-		detectionMode: 'mono',
-		maxDetectionRate: 30,
-		canvasWidth: 80*3,
-		canvasHeight: 60*3,
-	})
-	// initialize it
-	arToolkitContext.init(function onCompleted(){
-		// copy projection matrix to camera
+		cameraParametersUrl: 'data/camera_para.dat',
+		detectionMode: 'mono'
+	});
+	
+	// copy projection matrix to camera when initialization complete
+	arToolkitContext.init( function onCompleted(){
 		camera.projectionMatrix.copy( arToolkitContext.getProjectionMatrix() );
+	});
+
+	////////////////////////////////////////////////////////////
+	// setup markerRoots
+	////////////////////////////////////////////////////////////
+
+	// build markerControls
+	markerRoot1 = new THREE.Group();
+	scene.add(markerRoot1);
+	let markerControls1 = new THREEx.ArMarkerControls(arToolkitContext, markerRoot1, {
+		type: 'pattern', patternUrl: "data/hiro.patt",
 	})
 
-	markerHiro = addMarkerHiro();
-	scene.add (markerHiro); 
+	let geometry1 = new THREE.PlaneBufferGeometry(1,1, 4,4);
+	let loader = new THREE.TextureLoader();
+	let texture = loader.load( 'https://scontent.ftpe3-1.fna.fbcdn.net/v/t31.0-8/21686719_749103738633611_1190539228400828086_o.jpg?_nc_cat=104&_nc_sid=dd9801&_nc_oc=AQne4dwRxo15ZG9NqtVgNUu2hp-WECM81985ntP-rZQgAfwExW7_AADF9mmeqK1izUE&_nc_ht=scontent.ftpe3-1.fna&oh=b5d2db576a1d0b1144faea1a9c3ced1c&oe=5F0A5090', render );
+	let material1 = new THREE.MeshBasicMaterial( { map: texture } );
 	
-	var light = new THREE.PointLight( 0xffffff, 1, 100 );
-light.position.set( 5, 5, 5 );
-scene.add( light );
+	mesh1 = new THREE.Mesh( geometry1, material1 );
+	mesh1.rotation.x = -Math.PI/2;
 	
+	markerRoot1.add( mesh1 );
 }
-	
-function addMarkerHiro(){
-	let markerRoot = new THREE.Group()
-
-	var artoolkitMarker = new THREEx.ArMarkerControls(arToolkitContext, markerRoot, {
-		type : 'pattern',
-		patternUrl : THREEx.ArToolkitContext.baseURL + '../data/data/patt.hiro'
-	})
-
-	// need to add a WRAP ...
-	let myWrap = new THREE.Group()
-	markerRoot.add (myWrap)
-
-	// add a torus knot & a transparent box	
-	var geometry	= new THREE.TorusKnotGeometry(0.3,0.1,64,16);
-	var material	= new THREE.MeshLambertMaterial({color:'cyan'});
-	var mesh	= new THREE.Mesh( geometry, material );
-	mesh.position.y	= 0.5
-	//markerRoot.add (mesh);
-	myWrap.add (mesh);
-	
-	mesh = new THREE.Mesh (new THREE.BoxGeometry(1,1,1), 
-				new THREE.MeshNormalMaterial({transparent:true, opacity:0.3}));
-	mesh.position.y	= 0.5
-	//markerRoot.add (mesh);
-	myWrap.add (mesh);
-	
-	myWrap.scale.set (0.5,0.5,0.5);
-	
-	//markerRoot.scale.set (0.5, 0.5, 0.5) // this WONT work ...
-	//markerRoot.position.set (0.5, 0, -0.3) // this WONT work ...
-	
-	return markerRoot;
-}	
 
 
-function animate() {
-	requestAnimationFrame (animate);
-	stats.update();
-	
-	if( arToolkitSource.ready === false )	return
-	arToolkitContext.update( arToolkitSource.domElement )
+function update()
+{
+	// update artoolkit on every frame
+	if ( arToolkitSource.ready !== false )
+		arToolkitContext.update( arToolkitSource.domElement );
+}
 
-	//markerHiro.children[0].rotation.y += 0.1;
-	
-	renderer.render (scene, camera);	
+
+function render()
+{
+	renderer.render( scene, camera );
+}
+
+
+function animate()
+{
+	requestAnimationFrame(animate);
+	deltaTime = clock.getDelta();
+	totalTime += deltaTime;
+	update();
+	render();
 }
 
 </script></body>
