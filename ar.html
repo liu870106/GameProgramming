@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <meta name="viewport" content="width=device-width, user-scalable=no, minimum-scale=1.0, maximum-scale=1.0">
 <!-- three.js library -->
@@ -92,7 +93,11 @@ function init() {
 	})
 
 	markerHiro = addMarkerHiro();
-	//scene.add (markerHiro); 
+	scene.add (markerHiro); 
+	
+	var light = new THREE.PointLight( 0xffffff, 1, 100 );
+light.position.set( 5, 5, 5 );
+scene.add( light );
 	
 }
 	
@@ -104,18 +109,29 @@ function addMarkerHiro(){
 		patternUrl : THREEx.ArToolkitContext.baseURL + '../data/data/patt.hiro'
 	})
 
+	// need to add a WRAP ...
+	let myWrap = new THREE.Group()
+	markerRoot.add (myWrap)
+
 	// add a torus knot & a transparent box	
 	var geometry	= new THREE.TorusKnotGeometry(0.3,0.1,64,16);
-	var material	= new THREE.MeshNormalMaterial();
+	var material	= new THREE.MeshLambertMaterial({color:'cyan'});
 	var mesh	= new THREE.Mesh( geometry, material );
 	mesh.position.y	= 0.5
-	markerRoot.add (mesh);
+	//markerRoot.add (mesh);
+	myWrap.add (mesh);
 	
 	mesh = new THREE.Mesh (new THREE.BoxGeometry(1,1,1), 
 				new THREE.MeshNormalMaterial({transparent:true, opacity:0.3}));
 	mesh.position.y	= 0.5
-	markerRoot.add (mesh);
-		
+	//markerRoot.add (mesh);
+	myWrap.add (mesh);
+	
+	myWrap.scale.set (0.5,0.5,0.5);
+	
+	//markerRoot.scale.set (0.5, 0.5, 0.5) // this WONT work ...
+	//markerRoot.position.set (0.5, 0, -0.3) // this WONT work ...
+	
 	return markerRoot;
 }	
 
@@ -127,7 +143,7 @@ function animate() {
 	if( arToolkitSource.ready === false )	return
 	arToolkitContext.update( arToolkitSource.domElement )
 
-	markerHiro.children[0].rotation.x += 0.1;
+	//markerHiro.children[0].rotation.y += 0.1;
 	
 	renderer.render (scene, camera);	
 }
