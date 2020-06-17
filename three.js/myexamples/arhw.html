@@ -95,8 +95,8 @@ function init() {
 	scene.add (markerHiro); 
 	
 	var light = new THREE.PointLight( 0xffffff, 1, 100 );
-light.position.set( 5, 5, 5 );
-scene.add( light );
+	light.position.set( 5, 5, 5 );
+	scene.add( light );
 	
 }
 	
@@ -113,10 +113,12 @@ function addMarkerHiro(){
 	markerRoot.add (myWrap)
 
 	// add a torus knot & a transparent box	
-	var geometry	= new THREE.TorusKnotGeometry(0.3,0.1,64,16);
-	var material	= new THREE.MeshLambertMaterial({color:'cyan'});
+	var geometry = new THREE.PlaneBufferGeometry(1,1, 4,4);
+	var loader = new THREE.TextureLoader();
+	var texture = loader.load( 'https://live.staticflickr.com/3141/2957660197_2dfd6cf2c4_b.jpg', render );
+	var material = new THREE.MeshBasicMaterial( { map: texture } );
 	var mesh	= new THREE.Mesh( geometry, material );
-	mesh.position.y	= 0.5
+	mesh.rotation.x = -Math.PI/2;
 	//markerRoot.add (mesh);
 	myWrap.add (mesh);
 	
