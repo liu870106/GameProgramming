@@ -113,12 +113,12 @@ function initialize()
 	scene.add(markerRoot1);
 	var artoolkitMarker = new THREEx.ArMarkerControls(arToolkitContext, markerRoot, {
 		type : 'pattern',
-		patternUrl : THREEx.ArToolkitContext.baseURL + '../data/data/patt.hiro'
+		patternUrl : THREEx.ArToolkitContext.baseURL + '../data/data/pattern-tatung.hiro'
 	})
 
 	let geometry1 = new THREE.PlaneBufferGeometry(1,1, 4,4);
 	let loader = new THREE.TextureLoader();
-	let texture = loader.load( 'images/earth.jpg', render );
+	let texture = loader.load( 'https://live.staticflickr.com/3141/2957660197_2dfd6cf2c4_b.jpg', render );
 	let material1 = new THREE.MeshBasicMaterial( { map: texture } );
 	
 	mesh1 = new THREE.Mesh( geometry1, material1 );
