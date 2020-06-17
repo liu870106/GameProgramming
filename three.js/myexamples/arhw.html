@@ -125,7 +125,7 @@ function addMarkerHiro(){
 	var texture = loader.load( 'tatung2.jpg', render );
 	var material = new THREE.MeshBasicMaterial( { map: texture } );
 	var mesh	= new THREE.Mesh( geometry, material );
-	mesh.position.set(0,0.5,1.5);
+	mesh.position.set(0,1,1.5);
 	mesh.rotation.x = -Math.PI / 2;
 
 	myWrap.add (mesh);
