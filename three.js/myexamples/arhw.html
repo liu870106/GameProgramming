@@ -125,7 +125,10 @@ function addMarkerHiro(){
 	
 	return markerRoot;
 }	
-
+function render()
+{
+	renderer.render( scene, camera );
+}
 
 function animate() {
 	requestAnimationFrame (animate);
