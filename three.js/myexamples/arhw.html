@@ -109,7 +109,7 @@ function addMarkerHiro(){
 	})
 
 	// add a torus knot & a transparent box	
-	var geometry = new THREE.PlaneBufferGeometry(1,1, 10,10);
+	var geometry = new THREE.PlaneBufferGeometry(1,1, 4,4);
 	var loader = new THREE.TextureLoader();
 	var texture = loader.load( 'tatung.jpg', render );
 	var material = new THREE.MeshBasicMaterial( { map: texture } );
