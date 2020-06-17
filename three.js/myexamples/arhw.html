@@ -116,6 +116,7 @@ function addMarkerHiro(){
 	var texture = loader.load( 'tatung1.jpg', render );
 	var material = new THREE.MeshBasicMaterial( { map: texture } );
 	var mesh	= new THREE.Mesh( geometry, material );
+	mesh.position.y	= 0.5
 	mesh.rotation.x = -Math.PI / 2;
 	//markerRoot.add (mesh);
 	myWrap.add (mesh);
@@ -125,6 +126,7 @@ function addMarkerHiro(){
 	var material = new THREE.MeshBasicMaterial( { map: texture } );
 	var mesh	= new THREE.Mesh( geometry, material );
 	mesh.rotation.x = -Math.PI / 2;
+	mesh.position.y	= 0.5
 	myWrap.add (mesh);
 	
 	//markerRoot.scale.set (0.5, 0.5, 0.5) // this WONT work ...
